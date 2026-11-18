@@ -1,0 +1,16 @@
+# R temporary files
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+
+# Local environment settings
+.Renviron
+
+# Large datasets (optional)
+data/raw/
+data/processed/
+
+# Operating system files
+.DS_Store
+Thumbs.db
