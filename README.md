@@ -5,7 +5,7 @@ This is the git repo to keep track of Time series data analysis
   ### 2.2 Data Processing and Missing Data Treatment
 Data Continuity and Missing Observations
 The dataset consists of daily mean temperature observations from Environment and Climate Change Canada's Adjusted and Homogenized Canadian Climate Data (AHCCD), covering January 1, 1950, to December 31, 2020. Three stations were selected: Vancouver Sea Island CCG, Toronto City, and Winnipeg A CS, representing different Canadian climate regions. Each station contains 25,933 daily timestamps, with no missing dates or duplicate observations.
-However, the original dataset contains 16 missing temperature values in Vancouver, 33 in Toronto, and 19 in Winnipeg, representing 68 missing observations across the three stations.
+However, the original dataset contains 16 missing temperature values in Vancouver, 33 in Toronto, and 19 in Winnipeg, representing 68 missing observations across the three stations. \n
 Missing Data Treatment Using Kalman Smoothing
 To address missing temperature observations while preserving the temporal structure of the data, we employed a structural state-space model with Kalman smoothing rather than conventional linear interpolation or averaging neighbouring observations.
 For each station, we first estimated the long-term linear temperature trend and annual seasonality using ordinary least-squares regression with four Fourier harmonics and an annual period of 365.2425 days. These fitted components were subtracted from the original daily temperatures to obtain adjusted observations.
