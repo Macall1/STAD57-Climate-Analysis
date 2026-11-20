@@ -2,7 +2,7 @@ This is the git repo to keep track of Time series data analysis
 
 ### Missing Data Treatment
 
-2.2 Data Processing and Missing Data Treatment
+  ### 2.2 Data Processing and Missing Data Treatment
 Data Continuity and Missing Observations
 The dataset consists of daily mean temperature observations from Environment and Climate Change Canada's Adjusted and Homogenized Canadian Climate Data (AHCCD), covering January 1, 1950, to December 31, 2020. Three stations were selected: Vancouver Sea Island CCG, Toronto City, and Winnipeg A CS, representing different Canadian climate regions. Each station contains 25,933 daily timestamps, with no missing dates or duplicate observations.
 However, the original dataset contains 16 missing temperature values in Vancouver, 33 in Toronto, and 19 in Winnipeg, representing 68 missing observations across the three stations.
@@ -22,7 +22,7 @@ Limitations and Considerations
 Although this aggregation ensures a consistent number of weekly observations per year, the final week averages eight or nine daily temperatures rather than seven. This difference may slightly reduce the variability of Week 52 relative to other weeks and introduce unequal physical time intervals between observations.
 Since the primary research question concerns changes in temperature volatility, we will assess the sensitivity of our results to this aggregation choice by comparing them against an alternative series constructed using uniformly spaced seven-day weeks.
 Furthermore, the full-sample Kalman-smoothed dataset is used for retrospective exploratory analysis. For forecasting evaluation, imputation models will be fitted using training-period observations only to prevent information from future observations from influencing model estimation.
-3.1 Historical Changes in Weekly Temperature Volatility
+### 3.1 Historical Changes in Weekly Temperature Volatility
 To investigate historical changes in weekly temperature volatility, we first removed long-term temperature trends and annual seasonality from the 52-week temperature series for each station. A linear trend regression with four Fourier harmonics was fitted separately to Vancouver, Toronto City, and Winnipeg. The resulting residuals represent weekly temperature anomalies after accounting for the fitted mean temperature structure.
 We measured temperature volatility using the standard deviation of these adjusted anomalies, separately for winter (DJF) and summer (JJA). Winter exhibited substantially greater temperature variability than summer at all three stations. Vancouver had winter and summer standard deviations of 2.777°C and 1.383°C, Toronto City had 3.783°C and 2.045°C, and Winnipeg had 5.938°C and 2.422°C, respectively.
 To determine whether volatility changed over time, we calculated the squared weekly anomalies and their annual seasonal averages. Linear trends in annual seasonal mean squared anomalies were estimated using Newey–West standard errors with three annual lags to account for temporal dependence.
