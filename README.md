@@ -1,28 +1,30 @@
 This is the git repo to keep track of Time series data analysis
 
-### Missing Data Treatment
+# Missing Data Treatment
 
-  ### 2.2 Data Processing and Missing Data Treatment
-Data Continuity and Missing Observations
+  ## 2.2 Data Processing and Missing Data Treatment
+### Data Continuity and Missing Observations
 The dataset consists of daily mean temperature observations from Environment and Climate Change Canada's Adjusted and Homogenized Canadian Climate Data (AHCCD), covering January 1, 1950, to December 31, 2020. Three stations were selected: Vancouver Sea Island CCG, Toronto City, and Winnipeg A CS, representing different Canadian climate regions. Each station contains 25,933 daily timestamps, with no missing dates or duplicate observations.
-However, the original dataset contains 16 missing temperature values in Vancouver, 33 in Toronto, and 19 in Winnipeg, representing 68 missing observations across the three stations. \n
-Missing Data Treatment Using Kalman Smoothing
+However, the original dataset contains 16 missing temperature values in Vancouver, 33 in Toronto, and 19 in Winnipeg, representing 68 missing observations across the three stations. 
+\
+### Missing Data Treatment Using Kalman Smoothing
 To address missing temperature observations while preserving the temporal structure of the data, we employed a structural state-space model with Kalman smoothing rather than conventional linear interpolation or averaging neighbouring observations.
 For each station, we first estimated the long-term linear temperature trend and annual seasonality using ordinary least-squares regression with four Fourier harmonics and an annual period of 365.2425 days. These fitted components were subtracted from the original daily temperatures to obtain adjusted observations.
 A Gaussian local-level structural time-series model was then fitted to the adjusted series. Kalman smoothing was applied to estimate the underlying state at missing timestamps using information from surrounding observations. The estimated trend and seasonal components were subsequently restored to obtain the imputed daily temperatures.
+\
 Only missing observations were replaced, while all original observed temperatures remained unchanged. This procedure successfully filled all 68 missing daily observations, producing three complete daily temperature series.
 Although Kalman smoothing accounts for temporal dependence, imputation may still influence estimated temperature variability. We therefore retain indicators identifying imputed observations and will compare volatility estimates against those obtained from originally complete observations as a sensitivity analysis.
-Weekly Temperature Aggregation
+### Weekly Temperature Aggregation
 Following missing-value treatment, the completed daily temperature observations were aggregated into weekly averages to reduce short-term fluctuations and provide a consistent seasonal structure for time-series analysis.
 To ensure that each calendar year contains exactly 52 weekly observations, we adopted a calendar-based aggregation method. Week 1 consists of January 1–7, Week 2 consists of January 8–14, and subsequent weeks follow consecutive seven-day intervals through Week 51.
 The remaining days are assigned to Week 52, which contains eight days in regular years and nine days in leap years. The weekly mean temperature is calculated as the arithmetic average of all daily temperatures within the corresponding period.
 Unlike conventional calendar-week aggregation, this approach retains all daily observations without splitting weeks across calendar years or excluding boundary dates. Each weekly observation is assigned a representative midpoint date for seasonal classification. Winter, spring, summer, and autumn are defined as December–February (DJF), March–May (MAM), June–August (JJA), and September–November (SON), respectively.
 The resulting dataset contains 3,692 weekly observations per station, corresponding to 52 weeks annually over 71 years, for a total of 11,076 weekly observations across the three stations.
-Limitations and Considerations
+### Limitations and Considerations
 Although this aggregation ensures a consistent number of weekly observations per year, the final week averages eight or nine daily temperatures rather than seven. This difference may slightly reduce the variability of Week 52 relative to other weeks and introduce unequal physical time intervals between observations.
 Since the primary research question concerns changes in temperature volatility, we will assess the sensitivity of our results to this aggregation choice by comparing them against an alternative series constructed using uniformly spaced seven-day weeks.
 Furthermore, the full-sample Kalman-smoothed dataset is used for retrospective exploratory analysis. For forecasting evaluation, imputation models will be fitted using training-period observations only to prevent information from future observations from influencing model estimation.
-### 3.1 Historical Changes in Weekly Temperature Volatility
+  ## 3.1 Historical Changes in Weekly Temperature Volatility
 To investigate historical changes in weekly temperature volatility, we first removed long-term temperature trends and annual seasonality from the 52-week temperature series for each station. A linear trend regression with four Fourier harmonics was fitted separately to Vancouver, Toronto City, and Winnipeg. The resulting residuals represent weekly temperature anomalies after accounting for the fitted mean temperature structure.
 We measured temperature volatility using the standard deviation of these adjusted anomalies, separately for winter (DJF) and summer (JJA). Winter exhibited substantially greater temperature variability than summer at all three stations. Vancouver had winter and summer standard deviations of 2.777°C and 1.383°C, Toronto City had 3.783°C and 2.045°C, and Winnipeg had 5.938°C and 2.422°C, respectively.
 To determine whether volatility changed over time, we calculated the squared weekly anomalies and their annual seasonal averages. Linear trends in annual seasonal mean squared anomalies were estimated using Newey–West standard errors with three annual lags to account for temporal dependence.
